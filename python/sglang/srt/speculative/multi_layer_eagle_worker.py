@@ -767,7 +767,10 @@ class MultiLayerEagleWorker(TpModelWorker):
                     # Own-backend plan -> re-plan equivalent; allow post-pad
                     # re-plan. The per-step re-mark re-records padded shapes,
                     # so later steps skip.
-                    forward_batch.mark_forward_metadata_ready(replan_equivalent=True)
+                    forward_batch.mark_forward_metadata_ready(
+                        replan_equivalent=True,
+                        planner=self.mtp_model_runner(step).attn_backend,
+                    )
                 logits_output = (
                     self.mtp_model_runner(step).forward(forward_batch).logits_output
                 )

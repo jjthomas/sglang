@@ -537,7 +537,10 @@ class MultiLayerEagleDraftWorker(BaseDraftWorker):
                     # Own-backend plan -> re-plan equivalent; allow post-pad
                     # re-plan. The per-step re-mark re-records padded shapes,
                     # so later steps skip.
-                    forward_batch.mark_forward_metadata_ready(replan_equivalent=True)
+                    forward_batch.mark_forward_metadata_ready(
+                        replan_equivalent=True,
+                        planner=self.draft_runner_list[step].attn_backend,
+                    )
                 draft_logits_output = self.draft_runner_list[step].forward(
                     forward_batch
                 )

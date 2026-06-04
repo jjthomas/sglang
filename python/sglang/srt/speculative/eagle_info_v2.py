@@ -261,7 +261,9 @@ class EagleDraftInputV2Mixin:
             draft_model_runner.attn_backend.init_forward_metadata(forward_batch)
             # Own-backend plan, no special context -> a forward-path re-plan
             # is equivalent, so allow post-pad re-plan on DP-padding reshape.
-            forward_batch.mark_forward_metadata_ready(replan_equivalent=True)
+            forward_batch.mark_forward_metadata_ready(
+                replan_equivalent=True, planner=draft_model_runner.attn_backend
+            )
         return forward_batch
 
 
