@@ -957,8 +957,8 @@ class TRTLLMMLABackend(FlashInferMLAAttnBackend):
         )
 
         # Backstop: re-plan if the batch was padded after planning. Only
-        # fires for regimes that cannot opt into replan_equivalent (wrapper
-        # plans, mlv2's non-graph draft-extend loop); remove once fixed.
+        # fires for wrapper (multi-step) plans, which cannot opt into
+        # replan_equivalent; remove once those re-plan centrally too.
         batch_size = getattr(metadata, "batch_size", None)
         if batch_size is not None and batch_size < forward_batch.batch_size:
             self.init_forward_metadata(forward_batch)
@@ -1059,9 +1059,8 @@ class TRTLLMMLABackend(FlashInferMLAAttnBackend):
             )
 
             # Backstop: re-plan if the batch was padded after planning.
-            # Only fires for regimes that cannot opt into replan_equivalent
-            # (wrapper plans, mlv2's non-graph draft-extend loop); remove
-            # once fixed.
+            # Only fires for wrapper (multi-step) plans, which cannot opt
+            # into replan_equivalent; remove once those re-plan centrally too.
             batch_size = getattr(metadata, "batch_size", None)
             if batch_size is not None and batch_size < forward_batch.batch_size:
                 self.init_forward_metadata(forward_batch)
